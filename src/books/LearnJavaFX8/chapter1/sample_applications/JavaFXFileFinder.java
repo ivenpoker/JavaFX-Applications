@@ -94,6 +94,10 @@ public class JavaFXFileFinder extends Application {
                         searchProcess.setText("");
                         searchResults.setText("File Exception:  " + ioException.getMessage());
                     }
+                    catch (Exception exception) {
+                        searchProcess.setText("");
+                        searchResults.setText("File Exception: " + exception.getMessage());
+                    }
 
 
                 } else {
