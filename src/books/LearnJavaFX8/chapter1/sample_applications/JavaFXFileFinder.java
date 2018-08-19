@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -43,7 +45,10 @@ public class JavaFXFileFinder extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Text searchResults = new Text();
+
+        TextArea searchResults = new TextArea();
+        Label numberFound = new Label("");
+        searchResults.setEditable(false);
         searchResults.setStyle("-fx-text-fill: dodgerblue;");
         Text searchProcess = new Text();
 
@@ -69,11 +74,13 @@ public class JavaFXFileFinder extends Application {
                     try {
                         Path fileDir = Paths.get(searchFolder);
                         FileFinder finder = new FileFinder(fileName);
+                        searchResults.setStyle("-fx-text-fill: dodgerblue;");
                         searchProcess.setText("Searching file ....");
                         Files.walkFileTree(fileDir, finder);
 
                         ArrayList<Path> foundFile = finder.getFoundPaths();
                         if (foundFile.size() > 0) {
+                            numberFound.setText("Number found: " + foundFile.size());
                             StringBuilder filePaths = new StringBuilder();
                             for (Path path: foundFile) {
                                 System.out.println("Path found: " + path);
@@ -87,16 +94,19 @@ public class JavaFXFileFinder extends Application {
                         }
                     }
                     catch (InvalidPathException invalidPath) {
+                        searchResults.setStyle("-fx-text-fill: red;");
                         searchProcess.setText("");
                         searchResults.setText("Invalid path!");
                     }
                     catch (IOException ioException) {
+                        searchResults.setStyle("-fx-text-fill: red;");
                         searchProcess.setText("");
-                        searchResults.setText("File Exception:  " + ioException.getMessage());
+                        searchResults.setText("Error while processing:  " + ioException.getMessage());
                     }
                     catch (Exception exception) {
                         searchProcess.setText("");
-                        searchResults.setText("File Exception: " + exception.getMessage());
+                        searchResults.setStyle("-fx-text-fill: red;");
+                        searchResults.setText("Error while processing: " + exception.getMessage());
                     }
 
 
@@ -104,16 +114,16 @@ public class JavaFXFileFinder extends Application {
                     searchResults.setText("Please enter the folder to start searching form");
                 }
             } else {
-                searchResults.setText("Please enter file name to search for");
+                searchResults.setText("Please enter file name to search for!");
             }
         });
 
         VBox root = new VBox();
-        root.setSpacing(2);     // set the spacing to 2px
-        root.getChildren().addAll(fileNameField, searchFolderField, searchProcess,
-                searchButton, exitButton, searchResults);
+        root.setSpacing(5);     // set the spacing to 2px
+        root.getChildren().addAll(fileNameField, searchFolderField,
+                searchButton, numberFound, searchResults, exitButton);
 
-        Scene scene = new Scene(root, 350, 150);
+        Scene scene = new Scene(root, 650, 350);
         primaryStage.setTitle("File Search Program");
         primaryStage.setScene(scene);
         primaryStage.show();
