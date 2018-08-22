@@ -1,4 +1,4 @@
-package books.LearnJavaFX8.chapter1.sample_applications;
+package books.LearnJavaFX8.sample_applications;
 
 import books.LearnJavaFX8.HelperClasses.FileFinder;
 import javafx.application.Application;
