@@ -80,7 +80,7 @@ public class JavaFXFileFinder extends Application {
 
                         ArrayList<Path> foundFile = finder.getFoundPaths();
                         if (foundFile.size() > 0) {
-                            numberFound.setText("Number found: " + foundFile.size());
+                            numberFound.setText("Number found: " + foundFile.size() + " files");
                             StringBuilder filePaths = new StringBuilder();
                             for (Path path: foundFile) {
                                 System.out.println("Path found: " + path);
